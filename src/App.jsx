@@ -5,12 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Home from './pages/Home';
+import Home from './components/Home';
 import AddHotel from './pages/AddHotel';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
 import SignIn from './pages/SignIn';
-import ShowHotels from './components/ShowHotels';
+import Hotels from './pages/Hotels';
+import HotelDetails from './components/HotelDetails';
 
 const App = () => {
   return (
@@ -18,11 +19,12 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/hotels" element={<Hotels />} />
         <Route path="/add-hotel" element={<AddHotel />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/SignIn" element={<SignIn />} />
-        <Route path="/ShowHotels" element={<ShowHotels />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/hoteldetails" element={<HotelDetails />} />
 
       </Routes>
       <Footer />

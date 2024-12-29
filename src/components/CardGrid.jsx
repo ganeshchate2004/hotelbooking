@@ -88,7 +88,7 @@ const CardGrid = () => {
             <p className="location">{hotel.location}</p>
             <p className="description">{hotel.description}</p>
             <p className="rent">{hotel.rentPerDay}/day</p>
-            <a href="/ShowHotels" className="details-button">Show Details</a>
+            <a href="/hoteldetails" className="details-button">Show Details</a>
           </div>
         </div>
       ))}

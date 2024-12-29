@@ -1,8 +1,12 @@
-/* Header.css */
+/* Header Styles */
 header {
   background-color: white;
   padding: 15px 0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: sticky; /* Ensures the header stays visible */
+  top: 0;
+  z-index: 1000;
+  transition: background-color 0.3s ease-in-out;
 }
 
 header .container {
@@ -22,7 +26,6 @@ header input.form-control {
   font-size: 14px;
   border-radius: 50px;
   border: 1px solid #ddd;
-  box-sizing: border-box;
 }
 
 header button {
@@ -72,4 +75,10 @@ header .d-flex .rounded-circle {
 
 header .d-flex .rounded-circle:hover {
   border-color: #007bff;
+}
+
+.logo {
+  width: 150px; /* Adjusted size */
+  height: auto;
+  object-fit: contain;
 }
