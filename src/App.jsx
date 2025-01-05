@@ -11,7 +11,10 @@ import Profile from './pages/Profile';
 import Login from './pages/Login';
 import SignIn from './pages/SignIn';
 import Hotels from './pages/Hotels';
-import HotelDetails from './components/HotelDetails';
+import Search from './components/search';
+import HotelComment from './components/HotelComment';
+import BookingList from './components/BookingList';
+import CallBooking from './components/CallBooking';
 
 const App = () => {
   return (
@@ -24,7 +27,10 @@ const App = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/hoteldetails" element={<HotelDetails />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/bookinglist" element={<BookingList/>} />
+        <Route path="/hotelcomment/:id" element={<HotelComment />} />
+        <Route path="/hotelbooking/:id" element={<CallBooking />} />
 
       </Routes>
       <Footer />

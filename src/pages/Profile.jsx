@@ -1,108 +1,153 @@
-// src/components/Profile.jsx
-import React, { useState } from 'react';
-import './Profile.css'; // Ensure this file exists and is correctly imported
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Importing eye icons for show/hide password
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import './Profile.css';  // Import the CSS file
 
 const Profile = () => {
-    const [username, setUsername] = useState('JohnDoe');
-    const [email, setEmail] = useState('johndoe@example.com');
-    const [password, setPassword] = useState('1234');
-    const [isEditing, setIsEditing] = useState(false);
-    const [passwordVisible, setPasswordVisible] = useState(false); // State to toggle password visibility
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    const handleEdit = () => {
-        setIsEditing(true);
+  // For password change
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordChangeMessage, setPasswordChangeMessage] = useState(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        window.location.href = "/login"; // Redirect to login if token is not found
+        return;
+      }
+
+      try {
+        const response = await axios.get("http://localhost:5000/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUser(response.data);
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        setError("Failed to load profile");
+        console.error("Profile fetch failed:", err);
+      }
     };
 
-    const handleSave = () => {
-        setIsEditing(false);
-        console.log('Profile updated:', { username, email, password });
-    };
+    fetchProfile();
+  }, []);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        if (name === 'username') setUsername(value);
-        if (name === 'email') setEmail(value);
-        if (name === 'password') setPassword(value);
-    };
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
 
-    const togglePasswordVisibility = () => {
-        setPasswordVisible(!passwordVisible); // Toggle the visibility state
-    };
+    if (newPassword !== confirmPassword) {
+      setPasswordChangeMessage("New password and confirmation do not match");
+      return;
+    }
 
-    return (
-        <div className="profile-container">
-            <div className="profile-card">
-                {/* Profile logo */}
-                <div className="profile-logo">
-                    <img src="https://pic.onlinewebfonts.com/thumbnails/icons_542942.svg" alt="Profile Logo" />
-                </div>
-                <div className="profile-info">
-                    <table className="profile-table">
-                        <tbody>
-                            <tr>
-                                <td>Username</td>
-                                <td>
-                                    {isEditing ? (
-                                        <input
-                                            type="text"
-                                            name="username"
-                                            value={username}
-                                            onChange={handleChange}
-                                        />
-                                    ) : (
-                                        <span>{username}</span>
-                                    )}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Email</td>
-                                <td>
-                                    {isEditing ? (
-                                        <input
-                                            type="email"
-                                            name="email"
-                                            value={email}
-                                            onChange={handleChange}
-                                        />
-                                    ) : (
-                                        <span>{email}</span>
-                                    )}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Password</td>
-                                <td>
-                                    <div className="password-field">
-                                        {isEditing ? (
-                                            <input
-                                                type={passwordVisible ? 'text' : 'password'}
-                                                name="password"
-                                                value={password}
-                                                onChange={handleChange}
-                                            />
-                                        ) : (
-                                            <span>{password}</span>
-                                        )}
-                                        <button onClick={togglePasswordVisibility} type="button">
-                                            {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div className="profile-actions">
-                    {isEditing ? (
-                        <button onClick={handleSave}>Save Changes</button>
-                    ) : (
-                        <button onClick={handleEdit}>Edit Profile</button>
-                    )}
-                </div>
-            </div>
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/login"; // Redirect to login if token is not found
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        "http://localhost:5000/change-password",
+        {
+          currentPassword,
+          newPassword,
+          confirmPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setPasswordChangeMessage(response.data.message);
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (err) {
+      setPasswordChangeMessage(err.response?.data?.message || "Error changing password");
+      console.error("Password change failed:", err);
+    }
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className="error-message">{error}</p>;
+
+  return (
+    <div className="profile-card">
+
+
+      <div className="profile-body">
+        <div className="profile-image-container">
+          <img
+            src="https://pic.onlinewebfonts.com/thumbnails/icons_542942.svg"
+            alt="Profile"
+            className="profile-image"
+          />
         </div>
-    );
+        {user ? (
+          <div className="profile-info">
+            <p><strong>Username:</strong> {user.username}</p>
+            <p><strong>Email:</strong> {user.email}</p>
+          </div>
+        ) : (
+          <p>No user data found</p>
+        )}
+      </div>
+
+      <hr />
+
+      <div className="password-change">
+        <h3>Change Password</h3>
+        {passwordChangeMessage && <p className="error-message">{passwordChangeMessage}</p>}
+        <form onSubmit={handleChangePassword}>
+          <div className="form-group">
+            <label className="label">Current Password: </label>
+            <input
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              className="input"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label className="label">New Password: </label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="input"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label className="label">Confirm New Password: </label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="input"
+              required
+            />
+          </div>
+          <button className="button" type="submit">Change Password</button>
+        </form>
+      </div>
+
+
+    </div>
+  );
 };
 
 export default Profile;

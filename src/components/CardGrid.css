@@ -65,7 +65,7 @@
 
 .card-image img {
   display: block;
-  height: 200px;
+  height: 250px;
   object-fit: cover;
   width: 100%;
 }
@@ -132,6 +132,51 @@
 }
 
 .fullscreen-image-container img {
-  max-height: 90%;
-  max-width: 90%;
+  max-height: 100%;
+  max-width: 100%;
 }
+
+/* Container for the split button */
+.split-button {
+  display: flex;
+  width: 200px; /* Adjust width as needed */
+  height: 40px; /* Adjust height as needed */
+  /* border: 1px solid #ddd; */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-left: 17%;
+}
+
+/* Left side of the button */
+.left-button {
+  flex: 1;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+
+}
+
+.left-button:hover {
+  background-color: #0056b3;
+}
+
+/* Right side of the button */
+.right-button {
+  flex: 1;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+  
+}
+
+.right-button:hover {
+  background-color: #218838;
+}
+

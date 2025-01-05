@@ -5,15 +5,10 @@ import worldImg from '../assets/images/world.png'
 import heroImg from '../assets/images/hero-img01.jpg'
 import heroImg02 from '../assets/images/hero-img02.jpg'
 import heroVideo from '../assets/images/hero-video.mp4'
-import experienceImg from '../assets/images/experience.png'
 import Subtitle from '../shared/Subtitle'
-import SearchBar from '../shared/SearchBar'
-import ServiceList from '../services/ServiceList'
-import FeaturedTourList from './Featured-tours/FeaturedTourList'
-import MasonryImagesGallery from './image-gallery/MasonryImagesGallery'
-import Testimonials from './Testimonial/Testimonials'
-import Newsletter from '../shared/Newsletter'
-import CardGrid from './CardGrid'
+import Hotels from '../pages/Hotels'
+import Search from './search'
+
 
 const Home = () => {
   return (
@@ -34,6 +29,7 @@ const Home = () => {
         <Col lg="2">
         <div className="hero__img-box">
           <img src={heroImg} alt="" />
+         
         </div>
         </Col>
         <Col lg="2">
@@ -52,11 +48,13 @@ const Home = () => {
     <section>
       <Container>
         <Row>
+          <Search/>
+        
           <Col lg ='12' className="mb-5">
-          <Subtitle subtitle={'Explore'}/>
+          {/* <Subtitle subtitle={'Explore'}/> */}
           <h2 className="featured__tour-title">Our Top Hotels</h2>
           </Col>
-          <CardGrid/>
+          <Hotels/>
         </Row>
       </Container>
     </section>

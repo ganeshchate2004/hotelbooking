@@ -16,7 +16,7 @@ const Header = () => {
         </div>
 
         
-        <div className="flex-grow-1 mx-4">
+        {/* <div className="flex-grow-1 mx-4">
           <form className="d-flex">
             <input
               type="text"
@@ -28,7 +28,7 @@ const Header = () => {
               <strong>Search</strong>
             </button>
           </form>
-        </div>
+        </div> */}
 
         {/* Navigation Links */}
         <nav className="d-flex align-items-center">
@@ -42,7 +42,9 @@ const Header = () => {
           <Link to="/add-hotel" className="text-black me-3 btn btn-outline-light rounded-pill px-4">
             Add Hotel
           </Link>
-
+                  {/* <Link to="/bookinglist" className="text-black me-3 btn btn-outline-light rounded-pill px-4">
+            Booking List
+          </Link> */}
           {/* User Dropdown Button for SignIn/Login */}
           <Dropdown className="me-3">
             <Dropdown.Toggle variant="light" id="signin-login-dropdown" className="btn btn-primary rounded-pill">
@@ -68,6 +70,7 @@ const Header = () => {
               style={{ width: "40px", height: "40px", objectFit: "cover" }}
             />
           </Link>
+
         </nav>
       </div>
     </header>

@@ -1,50 +1,61 @@
-import React, { useState } from 'react';
-import"./Login.css"
+import React, { useState } from "react";
+import axios from "axios";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log({ email, password });
-    // Add logic to handle form submission
+    setLoading(true);
+
+    try {
+      const response = await axios.post("http://localhost:5000/login", {
+        email,
+        password,
+      });
+
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+
+      setLoading(false);
+      window.location.href = "/profile"; // Redirect to profile page after login
+    } catch (err) {
+      setLoading(false);
+      setError("Invalid credentials");
+      console.error("Login failed:", err);
+    }
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center min-vh-100">
-      <div className="card p-4" style={{ maxWidth: '400px', width: '100%' }}>
-        <h2 className="text-center mb-4">Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="loginEmail" className="form-label">Email</label>
-            <input
-              type="email"
-              className="form-control form-control-sm" // Small input size
-              id="loginEmail"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter email"
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="loginPassword" className="form-label">Password</label>
-            <input
-              type="password"
-              className="form-control form-control-sm" // Small input size
-              id="loginPassword"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
-              required
-            />
-          </div>
-           <div className="d-flex justify-content-center">
-            <button type="submit" className="btn btn-primary btn-sm">Login</button>
-          </div>
-        </form>
-      </div>
+    <div>
+      <h2>Login</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <form onSubmit={handleLogin}>
+        <div>
+          <label>Email: </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Password: </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
+      </form>
     </div>
   );
 };
